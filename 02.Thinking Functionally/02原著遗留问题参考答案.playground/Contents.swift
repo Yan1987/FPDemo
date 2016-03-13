@@ -46,14 +46,14 @@ struct Region {
     let lookup: Position -> Bool
 }
 
+func circle(radius: Distance) -> Region {
+    return Region(){$0.length <= radius}
+}
 extension Region {
-    static func circle(radius: Distance) -> Region {
-        return Region(){$0.length <= radius}
-    }
 }
 
-Region.circle(5).lookup(Position(x: 0, y: 6))
-Region.circle(5).lookup(Position(x: 0, y: 5))
+circle(5).lookup(Position(x: 0, y: 6))
+circle(5).lookup(Position(x: 0, y: 5))
 
 extension Region {
     static func circle2(radius: Distance, offset: Position) -> Region {
@@ -67,17 +67,17 @@ extension Region {
         return Region(){self.lookup($0.minus(offset))}
     }
 }
-Region.circle(5).shift(Position(x: 5, y: 0)).lookup(Position(x: 0, y: 0))
-Region.circle(5).shift(Position(x: 5, y: 0)).lookup(Position(x: 10, y: 0))
-Region.circle(5).shift(Position(x: 5, y: 0)).lookup(Position(x: 11, y: 0))
+circle(5).shift(Position(x: 5, y: 0)).lookup(Position(x: 0, y: 0))
+circle(5).shift(Position(x: 5, y: 0)).lookup(Position(x: 10, y: 0))
+circle(5).shift(Position(x: 5, y: 0)).lookup(Position(x: 11, y: 0))
 
 extension Region {
     func invert() -> Region {
         return Region(){!self.lookup($0)}
     }
 }
-Region.circle(5).invert().lookup(Position(x: 0, y: 5))
-Region.circle(5).invert().lookup(Position(x: 0, y: 6))
+circle(5).invert().lookup(Position(x: 0, y: 5))
+circle(5).invert().lookup(Position(x: 0, y: 6))
 
 extension Region {
     func intersection(region: Region) -> Region {
@@ -92,23 +92,23 @@ extension Region {
         return Region(){self.lookup($0) && region.invert().lookup($0)}
     }
 }
-let otherRegion = Region.circle(5).shift(Position(x: 5, y: 0))
-Region.circle(5).intersection(otherRegion).lookup(Position(x: 5.1, y: 0))
-Region.circle(5).intersection(otherRegion).lookup(Position(x: 2, y: 0))
+let otherRegion = circle(5).shift(Position(x: 5, y: 0))
+circle(5).intersection(otherRegion).lookup(Position(x: 5.1, y: 0))
+circle(5).intersection(otherRegion).lookup(Position(x: 2, y: 0))
 
-Region.circle(5).union(otherRegion).lookup(Position(x: 6, y: 0))
-Region.circle(5).union(otherRegion).lookup(Position(x: 10.1, y: 0))
+circle(5).union(otherRegion).lookup(Position(x: 6, y: 0))
+circle(5).union(otherRegion).lookup(Position(x: 10.1, y: 0))
 
-Region.circle(5).difference(otherRegion).lookup(Position(x: 2, y: 0))
-Region.circle(5).difference(otherRegion).lookup(Position(x: -1, y: 0))
-Region.circle(5).difference(otherRegion).lookup(Position(x: 6, y: 0))
+circle(5).difference(otherRegion).lookup(Position(x: 2, y: 0))
+circle(5).difference(otherRegion).lookup(Position(x: -1, y: 0))
+circle(5).difference(otherRegion).lookup(Position(x: 6, y: 0))
 
 extension Ship {
     func canSafelyEngageShip(target: Ship, friendly: Ship) -> Bool {
-        let friendlyRagion = Region.circle(unsafeRange).shift(friendly.position)
+        let friendlyRagion = circle(unsafeRange).shift(friendly.position)
         
-       return Region.circle(firingRange)
-            .difference(Region.circle(unsafeRange))
+       return circle(firingRange)
+            .difference(circle(unsafeRange))
             .shift(position)
             .difference(friendlyRagion)
             .lookup(target.position)
