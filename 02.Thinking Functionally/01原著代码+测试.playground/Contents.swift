@@ -14,10 +14,11 @@ struct Position {
 }
 
 extension Position {
-    func inRange(target: Position, range: Distance) -> Bool {
-        return sqrt(target.x * target.x + target.y * target.y) <= range
+    func inRange(range: Distance) -> Bool {
+        return sqrt(x * x + y * y) <= range
     }
 }
+Position(x: 0, y: 0).inRange(10)
 
 
 struct Ship {
@@ -34,6 +35,19 @@ extension Ship {
         return targetDistance <= firingRange
     }
 }
+let otherShip1 = Ship(position: Position(x: 10.1, y: 0),
+    firingRange: 10,
+    unsafeRange: 5)
+
+let myShip1 = Ship(position: Position(x: 0, y: 0),
+    firingRange: 10,
+    unsafeRange: 5)
+myShip1.canEngageShip(otherShip1) //return false
+
+let myShip2 = Ship(position: Position(x: 5, y: 0),
+                firingRange: 10,
+                unsafeRange: 5)
+myShip2.canEngageShip(otherShip1) //return true
 
 extension Ship {
     func canSafelyEngageShip(target: Ship) -> Bool {
@@ -70,8 +84,8 @@ extension Position {
 
 extension Ship {
     func canSafelyEngageShip2(target: Ship, friendly: Ship) -> Bool {
-        let targetDistance = target.position.minus(position).length
-        let friendlyDistance = friendly.position.minus(target.position).length
+        let targetDistance = target.position.minus(position).length // 敌方船只距离我们的船只的距离
+        let friendlyDistance = friendly.position.minus(target.position).length // 敌方船只距离右方的船只的距离
         return targetDistance <= firingRange
             && targetDistance > unsafeRange
             && (friendlyDistance > unsafeRange)
@@ -92,9 +106,8 @@ func circle(radius: Distance) -> Region {
 }
 /// circleT的类型是Region
 let circleT = circle(10)
-circleT(Position(x: 1, y: 1))
-circleT(Position(x: 10, y: 10))
-circle(10)(Position(x: 10, y: 10))
+circleT(Position(x: 1, y: 1)) //return true
+circleT(Position(x: 10, y: 10))//return false
 
 func circle2(radius: Distance, center: Position) -> Region {
     return { point in point.minus(center).length <= radius }
@@ -103,14 +116,14 @@ func circle2(radius: Distance, center: Position) -> Region {
 func shift(region: Region, offset: Position) -> Region {
     return { point in region(point.minus(offset)) }
 }
-
+let circleS =  shift(circle(10), offset: Position(x: 5, y: 5))
 
 func invert(region: Region) -> Region {
     return {point in !region(point)}
 }
 let invertT = invert(circle(10))
-invertT(Position(x: 1, y: 1))
-invertT(Position(x: 10, y: 10))
+invertT(Position(x: 1, y: 1)) // return false
+invertT(Position(x: 10, y: 10)) // return true
 
 // 返回一两个Region相交的Region,
 func intersection(region1: Region, region2: Region) -> Region{
@@ -154,8 +167,6 @@ let cannotEngageShip = Ship(position: Position(x: 20.1, y: 0),
 let unsafelyEngageShip = Ship(position: Position(x: 14.9, y: 0),
     firingRange: 10,
     unsafeRange: 5)
-
-
 
 let safelyFriendlyShip = Ship(position: Position(x: 0, y: 0),
     firingRange: 10,
