@@ -108,5 +108,5 @@ func composeFilters(filter1: Filter, _ filter2: Filter) -> Filter {
 infix operator >>> { associativity left}
 
 func >>> (filter1: Filter, filter2: Filter) -> Filter {
-    return {img in filter1(filter2(img))}
+    return {img in filter2(filter1(img))}
 }
