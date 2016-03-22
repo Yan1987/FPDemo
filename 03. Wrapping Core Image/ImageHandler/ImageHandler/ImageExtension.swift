@@ -4,7 +4,7 @@
 //
 //  Created by wl on 16/3/15.
 //  Copyright © 2016年 wl. All rights reserved.
-//
+//  普通版，提供参考
 
 import UIKit
 

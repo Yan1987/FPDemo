@@ -4,7 +4,7 @@
 //
 //  Created by wl on 16/3/15.
 //  Copyright © 2016年 wl. All rights reserved.
-//
+//  使用高阶函数的版本，提供参考
 
 import UIKit
 
@@ -52,7 +52,7 @@ func roundedCorner(radius: CGFloat, sizetoFit: CGSize) -> ImageBox {
         
     }
 }
-
+//自定义操作符只能在全局范围定义
 infix operator >>> {associativity left}
 
 func >>> (imageBox1: ImageBox, imageBox2: ImageBox) -> ImageBox {
