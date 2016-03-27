@@ -45,13 +45,6 @@ extension Array {
 }
 
 
-func map<A, B>(g: AnyGenerator<A>, f: A -> B) -> AnyGenerator<B> {
-    return anyGenerator {
-        g.next().map(f)
-    }
-}
-
-
 extension AnyGenerator {
     func myMap<T>(f: Element -> T) -> AnyGenerator<T> {
         return anyGenerator {
