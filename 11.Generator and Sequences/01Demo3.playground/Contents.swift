@@ -37,11 +37,12 @@ extension Array {
         }
     }
 }
-Array([1, 2, 3].generateSmallerByOne()).generate()
+let array = Array([1, 2, 3].generateSmallerByOne())
 
 extension Array {
     var decompose : (head: Element, tail: [Element])? {
-        return (count > 0) ? (self[0], Array(self[1..<count])) : nil }
+        return (count > 0) ? (self[0], Array(self[1..<count])) : nil
+    }
 }
 
 
@@ -53,14 +54,14 @@ extension AnyGenerator {
 
     }
 }
-
 extension Array {
     func smaller1() -> AnyGenerator<[Element]> {
         guard let (head, tail) = self.decompose else {
             return one(nil)
         }
-        let tt = tail.smaller1().myMap {[head] + $0}.generate()
+        let tt = tail.smaller1().myMap {[head] + $0}
         let o =  one(tail)
+
         return o + tt
     }
 }
@@ -76,11 +77,11 @@ extension Int: Smaller {
 extension Array where Element: Smaller {
     func smaller() -> AnyGenerator<[Element]> {
         guard let (head, tail) = self.decompose else {
-            return anyGenerator {return nil}
+            return one(nil)
         }
-        let gen1 = one(tail).generate()
-        let gen2 = tail.smaller().myMap {[head] + $0}.generate()
-        let gen3 = head.smaller().myMap {tail + [$0]}.generate()
+        let gen1 = one(tail)
+        let gen2 = tail.smaller().myMap {[head] + $0}
+        let gen3 = head.smaller().myMap {tail + [$0]}
         
         return gen1 + gen2 + gen3
     }

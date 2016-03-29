@@ -3,8 +3,18 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "#CharacterRangeLen=26&amp;CharacterRangeLoc=2074&amp;EndingColumnNumber=27&amp;EndingLineNumber=87&amp;StartingColumnNumber=1&amp;StartingLineNumber=87&amp;Timestamp=480780470.828192"
+         documentLocation = "#CharacterRangeLen=26&amp;CharacterRangeLoc=2018&amp;EndingColumnNumber=27&amp;EndingLineNumber=88&amp;StartingColumnNumber=1&amp;StartingLineNumber=88&amp;Timestamp=480908432.303902"
          selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "#CharacterRangeLen=1&amp;CharacterRangeLoc=813&amp;EndingColumnNumber=9&amp;EndingLineNumber=38&amp;StartingColumnNumber=1&amp;StartingLineNumber=38&amp;Timestamp=480864999.552467"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "#CharacterRangeLen=0&amp;CharacterRangeLoc=813&amp;EndingColumnNumber=13&amp;EndingLineNumber=38&amp;StartingColumnNumber=5&amp;StartingLineNumber=38&amp;Timestamp=480864999.552665"
+         selectedRepresentationIndex = "1"
          shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
    </TimelineItems>

@@ -8,7 +8,7 @@ indirect enum Tree<T> {
 let three: [Int] = Array(GeneratorOfOne(3))
 let empty: [Int] = Array(GeneratorOfOne(nil))
 
-func one<T>(x: T) -> AnyGenerator<T> {
+func one<T>(x: T?) -> AnyGenerator<T> {
     return anyGenerator(GeneratorOfOne(x))
 }
 
