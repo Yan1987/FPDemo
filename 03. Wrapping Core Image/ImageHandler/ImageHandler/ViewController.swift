@@ -18,9 +18,10 @@ class ViewController: UIViewController {
         view.addSubview(imageView)
         let image = UIImage(named: "img")!
 //        imageView.image = image?.addTextWatermark("哈哈").addRoundedCorner(10, sizetoFit: imageView.bounds.size)
-        let watermarkBox = watermark("这是水印")
-        let roundedCornerBox = roundedCorner(10, sizetoFit: imageView.bounds.size)
-        imageView.image = roundedCornerBox(image)
+//        let watermarkBox = watermark("这是水印")
+//        let roundedCornerBox = roundedCorner(10, sizetoFit: imageView.bounds.size)
+        let test = watermark("这是水印") >>> roundedCorner(10, sizetoFit: imageView.bounds.size)
+        imageView.image = test(image)
 
     }
 

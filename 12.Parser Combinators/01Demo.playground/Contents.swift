@@ -3,7 +3,7 @@ import UIKit
 
 
 func none<A>() -> AnySequence<A> {
-    return AnySequence(anyGenerator {nil})
+    return AnySequence(GeneratorOfOne(nil))
 }
 
 func one<A>(x: A) -> AnySequence<A> {
@@ -87,13 +87,25 @@ func join<A>(s: AnySequence<AnySequence<A>>) -> AnySequence<A> {
 struct Parser<Token, Result> {
     let p: ArraySlice<Token> -> AnySequence<(Result, ArraySlice<Token>)>
 }
+let t: Parser<Character, Character> = Parser { x in
+    guard let (head, tail) = x.decompose
+        else {
+            return none()
+    }
+    return one((head, tail))
+}
+
+let str = "abc"
+for (x, y) in t.p(str.slice) {
+    print("\(x)===\(y)")
+}
 
 func paraseA() -> Parser<Character, Character> {
     let a: Character = "a"
     return Parser { x in
         guard let (head, tail) = x.decompose
             where head == a else {
-            return none()
+                return none()
         }
         return one((a, tail))
     }
@@ -102,13 +114,13 @@ func paraseA() -> Parser<Character, Character> {
 
 
 func testParser<A>(parser: Parser<Character, A>,
-            input: String) -> String {
-    var result: [String] = []
-    for (x, s) in parser.p(input.slice) {
-        result += ["Success, found \(x), remainder: \(Array(s))"]
-    }
-    return result.isEmpty ?
-        "Parasing failed." : result.reduce("") {$0 + $1}
+    input: String) -> String {
+        var result: [String] = []
+        for (x, s) in parser.p(input.slice) {
+            result += ["Success, found \(x), remainder: \(Array(s))"]
+        }
+        return result.isEmpty ?
+            "Parasing failed." : result.reduce("") {$0 + $1}
 }
 
 testParser(paraseA(), input: "abc")
@@ -119,7 +131,7 @@ func parseCharacter(character: Character)
         return Parser { x in
             guard let (head, tail) = x.decompose
                 where head == character else {
-                return none()
+                    return none()
             }
             return one((character, tail))
         }
@@ -131,21 +143,21 @@ func satisfy<Token>(condition: Token -> Bool)
         return Parser { x in
             guard let (head, tail) = x.decompose
                 where condition(head) else {
-                return none()
+                    return none()
             }
             return one((head,tail))
         }
 }
 
 /********************
-choice
-***********************/
+ choice
+ ***********************/
 func token<Token: Equatable>(t: Token) -> Parser<Token, Token> {
     return satisfy {$0 == t}
 }
 func +<A>(l: AnySequence<A>, r: AnySequence<A>)
     -> AnySequence<A> {
-       return join(AnySequence([l, r]))
+        return join(AnySequence([l, r]))
 }
 infix operator <|> {associativity right precedence 130}
 func <|> <Token, A>(l: Parser<Token, A>, r: Parser<Token, A>)
@@ -158,9 +170,27 @@ let b: Character = "b"
 testParser(token(a) <|> token(b), input: "bcd")
 
 /********************
-sequence
-***********************/
-
+ sequence
+ ***********************/
+extension AnySequence {
+    func myFlatMap<A>(f: Element -> AnySequence<A>) -> AnySequence<A> {
+        return join(myMap(f))
+    }
+}
+func sequence<Token, A, B>(l: Parser<Token, A>, _ r: Parser<Token, B>) -> Parser<Token, (A, B)> {
+    return Parser { input in
+        let leftResults = l.p(input)
+        return leftResults.myFlatMap { (a, leftRest) in
+            let rightResults = r.p(leftRest)
+            return rightResults.myMap { (b, rightRest) in
+                ((a, b), rightRest)
+            }
+        }
+        
+    }
+}
+let p: Parser<Character, (Character, Character)> = sequence(token(a), token(b))
+testParser(p, input: "abcd")
 
 
 
