@@ -119,11 +119,20 @@ func sum(xs: [Int]) -> Int {
     }
     return result
 }
+sum([1, 2, 3, 4])
 
 func product(xs: [Int]) -> Int {
     var result: Int = 0
     for x in xs {
         result = result * x
+    }
+    return result
+}
+
+func concatenate(xs: [String]) -> String {
+    var result: String = ""
+    for x in xs {
+        result += x
     }
     return result
 }
