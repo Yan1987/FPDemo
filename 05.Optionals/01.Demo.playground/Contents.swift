@@ -25,15 +25,15 @@ if let madridPopulation = cities["Madrid"] {
 }
 
 infix operator ??? { associativity right precedence 131}
-
-func ???<T>(optional: T?, defaultValue: T) -> T {
-    if let x = optional {
-        return x
-    }else {
-        return defaultValue
-    }
-}
-Optional.Some(1) ??? 2 + 1 //重复计算
+//  这里存在一个重复计算引起的性能问题
+//func ???<T>(optional: T?, defaultValue: T) -> T {
+//    if let x = optional {
+//        return x
+//    }else {
+//        return defaultValue
+//    }
+//}
+//Optional.Some(1) ??? 2 + 1 //重复计算
 
 func ???<T>(optional: T?, defaultValue: () -> T) -> T {
     if let x = optional {
@@ -51,7 +51,7 @@ func ???<T>(optional: T?, @autoclosure defaultValue: () -> T) -> T {
         return defaultValue()
     }
 }
-Optional.Some(1) ?? 1 + 1
+Optional.Some(1) ??? 1 + 1
 
 switch madridPopulation {
 case 0?: print("Nobody in Madrid")
