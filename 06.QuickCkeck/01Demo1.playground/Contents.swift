@@ -9,13 +9,15 @@ extension Int: Arbitrary {
     static func arbitrary() -> Int {
         return Int(arc4random())
     }
-    
+}
+Int.arbitrary()
+
+
+extension Int {
     static func random(from from: Int, to: Int) -> Int {
         return from + (Int(arc4random()) % (to - from))
     }
 }
-Int.arbitrary()
-
 extension Character: Arbitrary {
     static func arbitrary() -> Character {
         return Character(UnicodeScalar(Int.random(from: 65, to: 90)))
