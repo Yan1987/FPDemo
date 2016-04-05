@@ -52,18 +52,27 @@ func check1<T: Arbitrary>(message: String, _ property: T -> Bool) -> () {
      print("\"\(message)\" passed \(numberOfIterations) tests.")
 }
 
+
+extension CGFloat: Arbitrary {
+    static func arbitrary() -> CGFloat {
+        let random: CGFloat = CGFloat(arc4random())
+        let maxUint = CGFloat(UInt32.max)
+        return 10000 * ((random - maxUint/2) / maxUint)
+    }
+}
 extension CGSize: Arbitrary {
     var area: CGFloat {
         return width * height
     }
     static func arbitrary() -> CGSize {
-        return CGSize(width: Int(arc4random()), height: Int(arc4random()))
+        return CGSize(width: CGFloat.arbitrary(), height: CGFloat.arbitrary())
     }
 }
 
 
 check1("Area should be at least 0") {(size: CGSize) in size.area >= 0}
-check1("Every string starts with Hello") { (s: String) in s.hasPrefix("Hellow")}
+check1("Every string starts with Hello") { (s: String) in s.hasPrefix("Hello")}
+
 
 
 
