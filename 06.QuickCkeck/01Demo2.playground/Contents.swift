@@ -32,6 +32,7 @@ extension Int: Arbitrary {
         return from + (Int(arc4random()) % (to - from))
     }
 }
+100.smaller()
 Int.arbitrary()
 
 extension Character: Arbitrary {
@@ -112,11 +113,17 @@ extension Array where Element: Arbitrary {
         return tabulate(randomLength) {_ in Element.arbitrary()}
     }
 }
+
 // 这样是无法满足约束的
 //check2("qsort should behave like sort"){ (x: [Int]) in
 //    
 //}
-
+// 下面这中写法是错误的
+//extension Array: Arbitrary where Element: Arbitrary {
+//    static func arbitrary() -> [Element] {
+//        ...
+//    }
+//}
 
 struct ArbitraryInstance<T> {
     let arbitrary: () -> T
